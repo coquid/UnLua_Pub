@@ -191,3 +191,49 @@ Each plugin has its own detailed CLAUDE.md file with specialized information:
 2. Add corresponding Lua test script in `Content/Script/Tests/Regression/Issue[Number]/`
 3. Implement fix in appropriate UnLua module
 4. Verify test passes in automation window
+
+## Game Development Documentation
+
+This project includes game development documentation in `/GameDev/` for organizing your game project:
+
+### 📁 Documentation Structure
+- **`GameDev/Design.md`**: Complete game design document
+  - Game concept, genre, and target platform
+  - Core gameplay mechanics and features
+  - Technical requirements (Blueprint/Lua structure)
+  - Development phases and priorities
+  - Asset requirements and art style guidelines
+
+- **`GameDev/Tasks.md`**: Development task management
+  - Sprint-based planning with current/backlog organization
+  - Bug tracking with priority levels and templates
+  - Progress tracking with completion percentages
+  - Feature ideas and technical improvements backlog
+  - Milestone tracking and sprint retrospectives
+
+- **`GameDev/Progress.md`**: Development journal and knowledge base
+  - Daily work logs with learning notes
+  - Problem-solving documentation and solutions
+  - Technical discoveries and reference information
+  - Weekly reviews and milestone tracking
+  - Quick reference for UnLua/Blueprint patterns
+
+- **`GameDev/Assets/`**: Design-related assets
+  - Concept art and reference images
+  - Wireframes and UI mockups
+  - Technical diagrams
+
+### 🔄 Recommended Workflow
+1. **Design Phase**: Define your game concept in `Design.md`
+2. **Planning**: Break down features into tasks in `Tasks.md`
+3. **Implementation**: Create Blueprints and Lua scripts following the planned structure
+4. **Progress Tracking**: Document daily work and learnings in `Progress.md`
+5. **Iteration**: Update design and tasks based on development discoveries
+
+### 🎮 Game Development Best Practices
+- **Blueprint-Lua Integration**: Use Blueprints for structure, Lua for logic
+- **File Organization**: Follow naming conventions (`BP_*` for Blueprints, `*_C.lua` for Lua)
+- **Enhanced Input**: Leverage UnLua's Enhanced Input integration for player controls
+- **Iterative Development**: Start with MVP, add features incrementally
+- **Documentation**: Keep design and progress docs updated throughout development
+- Lua에서 Unreal의 에셋을 가져와야할 때, 경로를 통해 가져오는 것은 하지 않는다. 대신, 연결된 Blueprint에서 Variable을 통해 가져오거나 전용 데이터를 가져오는 매니저를 통해 가져와야한다.
