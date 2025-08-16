@@ -71,4 +71,9 @@ Rider에서 UnLua 개발 효율을 대폭 올릴 수 있는 좋은 선택입니�
 
 궁금한 점 있으면 언제든 문의해 주세요.
 
+# 주의 사항.
+![img.png](../Images/img.png)
+- 여기서 Too Large file threshold 값을 조절해줘야한다.
+  - 기본 = 1024 KiB
+
 <div style="text-align: center">⁂</div>
