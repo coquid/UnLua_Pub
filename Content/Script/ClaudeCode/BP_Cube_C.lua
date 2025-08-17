@@ -6,13 +6,10 @@ local BP_Cube_C = Class()
 
 -- Constructor 함수 - 가장 이른 시점에서 Tick 설정
 function BP_Cube_C:Initialize()
-    print("BP_Cube_C: Initialize 호출됨")
-    
     -- Constructor에서 Tick 활성화
     if self.PrimaryActorTick then
         self.PrimaryActorTick.bCanEverTick = true
         self.PrimaryActorTick.bStartWithTickEnabled = true
-        print("BP_Cube_C: Constructor에서 Tick 설정")
     end
 end
 
@@ -20,31 +17,17 @@ function BP_Cube_C:ReceiveBeginPlay()
     -- 부모 클래스의 BeginPlay 호출
     self.Overridden.ReceiveBeginPlay(self)
     
-    print("BP_Cube_C: 큐브 생성됨 -", self:GetName())
-    
-    -- 모든 방법으로 Tick 활성화 시도
+    -- Tick 활성화
     self:SetActorTickEnabled(true)
-    
-    -- PrimaryActorTick 직접 설정
     local PrimaryTick = self.PrimaryActorTick
     if PrimaryTick then
         PrimaryTick.bCanEverTick = true
         PrimaryTick.bStartWithTickEnabled = true
         PrimaryTick.bTickEvenWhenPaused = false
-        print("BP_Cube_C: PrimaryActorTick 설정 완료")
-    else
-        print("BP_Cube_C: PrimaryActorTick을 찾을 수 없음")
     end
-    
-    -- Tick 상태 확인
-    local IsTickEnabled = self:IsActorTickEnabled()
-    print("BP_Cube_C: Tick 활성화 상태:", IsTickEnabled)
     
     -- 큐브 초기 설정
     self:SetupCube()
-    
-    -- Tick 준비 완료 (로그 정리)
-    -- print("BP_Cube_C: Tick 준비 완료")
 end
 
 function BP_Cube_C:ForceEnableTick()
@@ -97,7 +80,6 @@ end
 function BP_Cube_C:StartRotation()
     -- 큐브가 Y축을 중심으로 천천히 회전하도록 설정
     self.RotationSpeed = 90.0 -- 초당 90도
-    print("BP_Cube_C: 회전 시작")
 end
 
 -- Tick 이벤트 - 큐브 회전 (K2_ 함수 사용)
@@ -123,7 +105,6 @@ function BP_Cube_C:ReceiveActorBeginOverlap(OtherActor)
     if OtherActor and OtherActor:IsA(UE.APawn) then
         local PlayerController = OtherActor:GetController()
         if PlayerController and PlayerController:IsA(UE.APlayerController) then
-            print("BP_Cube_C: 플레이어와 충돌! 큐브 수집")
             self:CollectCube(OtherActor)
         end
     end
@@ -136,8 +117,6 @@ function BP_Cube_C:CollectCube(Player)
     
     -- 수집 불가능 상태로 변경 (중복 수집 방지)
     self.bIsCollectable = false
-    
-    print("BP_Cube_C: 큐브 수집됨!")
     
     -- 게임 매니저에게 수집 알림 (나중에 구현)
     self:NotifyGameManager()
@@ -165,28 +144,22 @@ function BP_Cube_C:FindGameManagerAlternative()
         for i = 1, AllActors:Length() do
             local Actor = AllActors:Get(i)
             if Actor and Actor:GetName():find("GameManager") then
-                print("BP_Cube_C: GameManager 발견:", Actor:GetName())
                 if Actor.OnCubeCollected then
                     Actor:OnCubeCollected(self)
                     return
                 end
             end
         end
-        print("BP_Cube_C: GameManager를 찾을 수 없음")
     end
 end
 
 function BP_Cube_C:DestroyCube()
-    print("BP_Cube_C: 큐브 제거 시작")
-    
     -- 즉시 큐브를 숨기고 충돌 비활성화
     self:SetActorHiddenInGame(true)
     self:SetActorEnableCollision(false)
-    print("BP_Cube_C: 큐브 숨김 및 충돌 비활성화 완료")
     
     -- 액터 완전 제거
     self:K2_DestroyActor()
-    print("BP_Cube_C: 큐브 제거 완료")
 end
 
 -- 디버그용 함수

@@ -11,7 +11,28 @@ function BP_Player_C:ReceiveBeginPlay()
     -- 부모 클래스의 BeginPlay 호출 (Blueprint BeginPlay 실행)
     self.Overridden.ReceiveBeginPlay(self)
     
+    -- 맵 경계 설정
+    self:InitializeBounds()
+    
     print("BP_Player_C: 플레이어 초기화 완료")
+end
+
+-- 맵 경계 초기화
+function BP_Player_C:InitializeBounds()
+    -- 맵 경계 설정 (큐브 스폰 범위보다 약간 더 넓게)
+    self.MapBounds = {
+        MinX = -1200,  -- 왼쪽 경계
+        MaxX = 1200,   -- 오른쪽 경계
+        MinY = -1200,  -- 뒤쪽 경계
+        MaxY = 1200,   -- 앞쪽 경계
+        MinZ = 0,      -- 아래쪽 경계 (땅 아래로 떨어지지 않도록)
+        MaxZ = 1000    -- 위쪽 경계 (너무 높이 올라가지 않도록)
+    }
+    
+    -- 경계 밖 위치에서 플레이어를 이동시킬 안전 위치
+    self.SafePosition = UE.FVector(0, 0, 100)
+    
+    print("BP_Player_C: 맵 경계 설정 완료")
 end
 
 -- Input Axis 핸들러들 (DefaultInput.ini의 AxisMappings와 매치)
@@ -146,9 +167,56 @@ function BP_Player_C:HandleLookInput(LookVector)
     end
 end
 
--- 디버그용 Tick 이벤트
+-- Tick 이벤트 - 맵 경계 체크
 function BP_Player_C:ReceiveTick(DeltaTime)
-    -- 현재는 비어있음, 필요시 디버그 정보 출력
+    -- 맵 경계 체크
+    self:CheckMapBounds()
+end
+
+-- 맵 경계 체크 및 플레이어 위치 보정
+function BP_Player_C:CheckMapBounds()
+    if not self.MapBounds then
+        return
+    end
+    
+    local CurrentLocation = self:K2_GetActorLocation()
+    local NewLocation = CurrentLocation
+    local OutOfBounds = false
+    
+    -- X축 경계 체크
+    if CurrentLocation.X < self.MapBounds.MinX then
+        NewLocation.X = self.MapBounds.MinX
+        OutOfBounds = true
+    elseif CurrentLocation.X > self.MapBounds.MaxX then
+        NewLocation.X = self.MapBounds.MaxX
+        OutOfBounds = true
+    end
+    
+    -- Y축 경계 체크
+    if CurrentLocation.Y < self.MapBounds.MinY then
+        NewLocation.Y = self.MapBounds.MinY
+        OutOfBounds = true
+    elseif CurrentLocation.Y > self.MapBounds.MaxY then
+        NewLocation.Y = self.MapBounds.MaxY
+        OutOfBounds = true
+    end
+    
+    -- Z축 경계 체크 (아래로 떨어지는 것 방지)
+    if CurrentLocation.Z < self.MapBounds.MinZ then
+        -- 플레이어가 맵 아래로 떨어진 경우 안전 위치로 이동
+        NewLocation = self.SafePosition
+        OutOfBounds = true
+        print("BP_Player_C: 플레이어가 맵 아래로 떨어져 안전 위치로 이동")
+    elseif CurrentLocation.Z > self.MapBounds.MaxZ then
+        NewLocation.Z = self.MapBounds.MaxZ
+        OutOfBounds = true
+    end
+    
+    -- 경계를 벗어난 경우 위치 보정
+    if OutOfBounds then
+        self:K2_SetActorLocation(NewLocation, false, nil, false)
+        -- print("BP_Player_C: 맵 경계 보정 - 새 위치: " .. tostring(NewLocation))
+    end
 end
 
 -- 충돌 감지 (큐브 수집용 - 나중에 BP_Cube 구현시 사용)

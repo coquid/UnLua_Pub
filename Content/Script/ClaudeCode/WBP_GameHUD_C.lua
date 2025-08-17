@@ -5,12 +5,7 @@
 local WBP_GameHUD_C = Class()
 
 function WBP_GameHUD_C:Construct()
-    print("WBP_GameHUD_C: UI 위젯 생성됨")
-    
-    -- 게임 매니저 참조 찾기
     self:FindGameManager()
-    
-    -- 초기 UI 업데이트
     self:UpdateDisplay()
 end
 
