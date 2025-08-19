@@ -6,26 +6,26 @@
 
 -- API:
 --     LuaPanda.printToVSCode(logStr, printLevel, type)
---         打印日志到VSCode Output下 LuaPanda Debugger 中
---         @printLevel: debug(0)/info(1)/error(2) 这里的日志等级需高于launch.json中配置等级日志才能输出 (可选参数，默认0)
---         @type(可选参数，默认0): 0:VSCode output console  1:VSCode tip  2:VSCode debug console
+--         VSCode Output의 LuaPanda Debugger에 로그 출력
+--         @printLevel: debug(0)/info(1)/error(2) 여기서 로그 레벨은 launch.json에 설정된 레벨보다 높아야 출력됩니다 (선택적 매개변수, 기본값 0)
+--         @type(선택적 매개변수, 기본값 0): 0:VSCode output console  1:VSCode tip  2:VSCode debug console
 
 --     LuaPanda.BP()
---         强制打断点，可以在协程中使用。建议使用以下写法:
+--         강제 브레이크포인트, 코루틴에서 사용 가능. 다음 사용법을 권장:
 --         local ret = LuaPanda and LuaPanda.BP and LuaPanda.BP();
---         如果成功加入断点ret返回true，否则是nil
+--         성공적으로 브레이크포인트가 추가되면 ret은 true를 반환, 그렇지 않으면 nil
 
 --     LuaPanda.getInfo()
---         返回获取调试器信息。包括版本号，是否使用lib库，系统是否支持loadstring(load方法)。返回值类型string, 推荐在调试控制台中使用。
+--         디버거 정보를 반환합니다. 버전 번호, lib 라이브러리 사용 여부, 시스템의 loadstring(load 메서드) 지원 여부를 포함합니다. 반환 타입은 string이며 디버그 콘솔에서 사용을 권장합니다.
 
 --     LuaPanda.testBreakpoint()
---         测试断点，用于分析路径错误导致断点无法停止的情况。测试方法是
---         1. launch.json 中开启 stopOnEntry, 或者在代码中加入LuaPanda.BP()。
---         2. 运行调试器和 lua 进程，当停止在 stopOnEntry 或者 LuaPanda.BP() 时在调试控制台输入 LuaPanda.testBreakpoint()
---         3. 根据提示更新断点后再次输入 LuaPanda.testBreakpoint()。此时系统会输出一些提示，帮助用户分析断点可能无法停止的原因。
+--         브레이크포인트 테스트, 경로 오류로 인해 브레이크포인트가 중지되지 않는 상황을 분석하는 데 사용. 테스트 방법:
+--         1. launch.json에서 stopOnEntry를 활성화하거나 코드에 LuaPanda.BP()를 추가합니다.
+--         2. 디버거와 lua 프로세스를 실행하고, stopOnEntry나 LuaPanda.BP()에서 중지되면 디버그 콘솔에 LuaPanda.testBreakpoint()를 입력합니다.
+--         3. 안내에 따라 브레이크포인트를 업데이트한 후 LuaPanda.testBreakpoint()를 다시 입력합니다. 이때 시스템이 브레이크포인트가 중지되지 않는 원인을 분석하는 데 도움이 되는 메시지를 출력합니다.
 
 --     LuaPanda.doctor()
---         返回对当前环境的诊断信息，提示可能存在的问题。返回值类型string, 推荐在调试控制台中使用。
+--         현재 환경에 대한 진단 정보를 반환하여 잘재된 문제를 안내합니다. 반환 타입은 string이며 디버그 콘솔에서 사용을 권장합니다.
 
 --     LuaPanda.getBreaks()
 --         获取断点信息，推荐在调试控制台中使用。

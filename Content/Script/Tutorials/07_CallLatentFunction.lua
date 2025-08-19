@@ -1,5 +1,5 @@
---[[
-    说明：在Lua协程中可以方便的使用UE4的Latent函数实现延迟执行的效果
+--[[ ⏱️
+    설명: Lua 코루틴에서 UE4의 Latent 함수를 편리하게 사용하여 지연 실행 효과를 구현할 수 있습니다.
 ]] --
 
 local Screen = require "Tutorials.Screen"
@@ -7,17 +7,17 @@ local Screen = require "Tutorials.Screen"
 local M = UnLua.Class()
 
 local function run(self, name)
-    Screen.Print(string.format("协程%s：启动", name))
+    Screen.Print(string.format("코루틴 %s: 시작", name))
     for i = 1, 5 do
         UE.UKismetSystemLibrary.Delay(self, 1)
-        Screen.Print(string.format("协程%s：%d", name, i))
+        Screen.Print(string.format("코루틴 %s: %d", name, i))
     end
-    Screen.Print(string.format("协程%s：结束", name))
+    Screen.Print(string.format("코루틴 %s: 종료", name))
 end
 
 function M:ReceiveBeginPlay()
     local msg = [[
-    —— 本示例来自 "Content/Script/Tutorials.07_CallLatentFunction.lua"
+    —— 이 예제는 "Content/Script/Tutorials.07_CallLatentFunction.lua"에서 가져왔습니다.
     ]]
     Screen.Print(msg)
 

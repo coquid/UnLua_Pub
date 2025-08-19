@@ -1,16 +1,16 @@
---[[
-    说明：如果需要从C++侧调用Lua，需要将UnLua模块添加到 {工程名}.Build.cs 的依赖配置里
+--[[ 🔄
+    설명: C++에서 Lua를 호출해야 할 경우, UnLua 모듈을 {프로젝트명}.Build.cs의 의존성 설정에 추가해야 합니다.
 
-    如果需要访问Lua原生API，则还需要添加Lua模块
+    Lua 네이티브 API에 접근해야 하는 경우, Lua 모듈도 추가해야 합니다.
 
-    例如：
+    예시:
     PrivateDependencyModuleNames.AddRange(new string[]
     {
         "UnLua",
         "Lua",
     });
 
-    本示例C++源码：
+    이 예제의 C++ 소스 코드:
     Source\TPSProject\TutorialBlueprintFunctionLibrary.cpp
 ]]--
 
@@ -22,7 +22,7 @@ function M:ReceiveBeginPlay()
     local msg =
         [[
 
-    —— 本示例来自 "Content/Script/Tutorials.08_CppCallLua.lua"
+    —— 이 예제는 "Content/Script/Tutorials.08_CppCallLua.lua"에서 가져왔습니다.
     ]]
     Screen.Print(msg)
     UE.UTutorialBlueprintFunctionLibrary.CallLuaByGlobalTable()
@@ -32,7 +32,7 @@ end
 
 function M.CallMe(a, b)
     local ret = a + b
-    local msg = string.format("[Lua]收到来自C++的调用，a=%f b=%f，返回%f", a, b, ret)
+    local msg = string.format("[Lua] C++에서 호출을 받았습니다. a=%f b=%f, 반환값=%f", a, b, ret)
     Screen.Print(msg)
     return ret
 end

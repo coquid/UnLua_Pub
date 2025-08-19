@@ -1,13 +1,13 @@
---[[
-    说明：除了实现 UnLuaInterface 的静态绑定方式外，还可以在运行时动态绑定对象到Lua
+--[[ ⚡
+    설명: UnLuaInterface를 구현하는 정적 바인딩 방식 외에도, 런타임에 동적으로 객체를 Lua에 바인딩할 수 있습니다.
 
-    对于 Actor 类，可以使用 SpawnActor 接口，例如：
+    Actor 클래스의 경우, SpawnActor 인터페이스를 사용할 수 있습니다. 예시:
     World:SpawnActor(SpawnClass, Transform, AlwaysSpawn, self, self, "Tutorials.GravitySphereActor")
 
-    对于非 Actor 类，可以使用 NewObject 接口，例如：
+    비-Actor 클래스의 경우, NewObject 인터페이스를 사용할 수 있습니다. 예시:
     NewObject(WidgetClass, self, nil, "Tutorials.IconWidget")
 
-    注意：无论哪种绑定方式，都需要指定脚本文件路径。它是一个相对于 {工程目录}/Content/Script 下的相对路径。
+    주의: 어떤 바인딩 방식이든 스크립트 파일 경로를 지정해야 합니다. 이는 {프로젝트 디렉터리}/Content/Script 하위의 상대 경로입니다.
 ]]--
 
 local Screen = require "Tutorials.Screen"
@@ -17,11 +17,11 @@ local M = UnLua.Class()
 function M:ReceiveBeginPlay()
     local msg =
         [[
-    鼠标左键：创建动态绑定的 Actor
+    마우스 왼쪽 버튼: 동적 바인딩된 Actor 생성
 
-    鼠标右键：创建动态绑定的 Object
+    마우스 오른쪽 버튼: 동적 바인딩된 Object 생성
 
-    —— 本示例来自 "Content/Script/Tutorials.04_DynamicBinding.lua"
+    —— 이 예제는 "Content/Script/Tutorials.04_DynamicBinding.lua"에서 가져왔습니다.
     ]]
     Screen.Print(msg)
 end

@@ -15,7 +15,7 @@ function M:ReceivePossessed()
     if self.NameTextRender then
         self.NameTextRender:SetText(self.Name)
     end
-    self:Say_Multicast("我来了")
+    self:Say_Multicast("저 왔어요")
 end
 
 function M:Say_Server_RPC(text)
@@ -23,7 +23,7 @@ function M:Say_Server_RPC(text)
 end
 
 function M:Say_Multicast_RPC(text)
-    local msg = string.format("[%s]说：%s", self.Name, text)
+    local msg = string.format("[%s] 말: %s", self.Name, text)
     Screen.Print(msg)
 end
 
@@ -33,7 +33,7 @@ end
 
 function M:SpaceBar_Pressed()
     self:Jump()
-    self:Say_Server("我跳~")
+    self:Say_Server("점프!")
 end
 
 function M:MoveForward(AxisValue)

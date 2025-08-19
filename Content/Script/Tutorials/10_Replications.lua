@@ -1,13 +1,13 @@
---[[
-    说明：
+--[[ 🌐
+    설명: 네트워크 리플리케이션 예제
     
-    使用 {函数名}_RPC 可以覆盖蓝图中RPC函数的实现
-    使用 OnRep_{变量名} 可以覆盖蓝图中变量同步消息的处理
+    {함수명}_RPC를 사용하여 블루프린트의 RPC 함수 구현을 오버라이드할 수 있습니다.
+    OnRep_{변수명}을 사용하여 블루프린트의 변수 동기화 메시지 처리를 오버라이드할 수 있습니다.
 
-    蓝图示例：
+    블루프린트 예제:
     Content/Tutorials/10_Replications/ChatCharacter.uasset
 
-    脚本示例：
+    스크립트 예제:
     Content/Script/Tutorials/ChatCharacter.lua
 ]] --
 
@@ -21,12 +21,12 @@ function M:ReceiveBeginPlay()
     end
     local msg = [[
 
-    试试使用多人模式运行示例吧
+    멀티플레이어 모드로 예제를 실행해 보세요!
 
-    方向键：移动
-    空格：跳跃
+    방향키: 이동
+    스페이스바: 점프
 
-    —— 本示例来自 "Content/Script/Tutorials.10_Replications.lua"
+    —— 이 예제는 "Content/Script/Tutorials.10_Replications.lua"에서 가져왔습니다.
     ]]
     Screen.Print(msg)
 end

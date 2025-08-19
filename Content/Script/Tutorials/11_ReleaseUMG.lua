@@ -1,18 +1,18 @@
---[[
-    说明：
+--[[ 🗑️
+    설명: UMG 객체 해제 과정
 
-    UMG对象的释放流程：
-    1、调用self:Release()，解除LuaTable在C++侧的引用
-    2、确保LuaTable在Lua侧没有其他引用，触发LuaGC
-    3、C++侧收到UObject_Delete回调，解除UMG在C++侧的引用
-    4、确保UMG在C++侧没有其他引用，触发UEGC
+    UMG 객체의 해제 흐름:
+    1. self:Release() 호출로 C++측 LuaTable 참조 해제
+    2. Lua측에서 LuaTable의 다른 참조가 없는지 확인하여 Lua GC 트리거
+    3. C++측이 UObject_Delete 콜백을 받아 UMG의 C++측 참조 해제
+    4. C++측에서 UMG의 다른 참조가 없는지 확인하여 UE GC 트리거
 
-    小提示：
+    팁: 💡
 
-    使用控制台命令查看对象和类的引用情况：
+    콘솔 명령으로 객체와 클래스의 참조 상황 확인:
     
-    查看指定类的引用列表：Obj List Class=ReleaseUMG_Root_C
-    查看指定对象的引用链：Obj Refs Name=ReleaseUMG_Root_C_0
+    지정된 클래스의 참조 목록 보기: Obj List Class=ReleaseUMG_Root_C
+    지정된 객체의 참조 체인 보기: Obj Refs Name=ReleaseUMG_Root_C_0
 ]] --
 
 local Screen = require "Tutorials.Screen"
@@ -22,12 +22,12 @@ local M = UnLua.Class()
 local function print_intro()
     local msg =
         [[
-使用以下按键进行一次强制垃圾回收：
+다음 키를 사용하여 강제 가비지 컬렉션을 실행하세요:
 
-C：强制 C++ GC
-L：强制 Lua GC
+C: 강제 C++ GC
+L: 강제 Lua GC
 
-—— 本示例来自 "Content/Script/Tutorials.11_ReleaseUMG.lua"
+—— 이 예제는 "Content/Script/Tutorials.11_ReleaseUMG.lua"에서 가져왔습니다.
 ]]
     Screen.Print(msg)
 end

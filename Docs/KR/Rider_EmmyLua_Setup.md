@@ -75,5 +75,6 @@ Rider에서 UnLua 개발 효율을 대폭 올릴 수 있는 좋은 선택입니�
 ![img.png](../Images/img.png)
 - 여기서 Too Large file threshold 값을 조절해줘야한다.
   - 기본 = 1024 KiB
+- Lua 버젼도 5.4 로 맞춰야 제대로 되는 듯 싶다.
 
 <div style="text-align: center">⁂</div>

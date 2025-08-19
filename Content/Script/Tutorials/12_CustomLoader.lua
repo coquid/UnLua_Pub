@@ -1,12 +1,12 @@
---[[
-    说明：通过绑定 FUnLuaDelegates::CustomLoadLuaFile 可以实现自定义Lua加载器
+--[[ 📂
+    설명: FUnLuaDelegates::CustomLoadLuaFile을 바인딩하여 사용자 정의 Lua 로더를 구현할 수 있습니다.
 
-    演示两种常见的实现供参考：
+    참고를 위해 두 가지 일반적인 구현 방식을 시연합니다:
 
-    方式1：查找路径固定，性能更好
-    方式2：通过package.path查找，更加灵活
+    방식 1: 고정된 검색 경로, 더 나은 성능
+    방식 2: package.path를 통해 검색, 더 유연함
 
-    本示例C++源码：
+    이 예제의 C++ 소스 코드:
     Source\TPSProject\TutorialBlueprintFunctionLibrary.cpp
 ]]
 
@@ -18,7 +18,7 @@ local function print_intro()
     local msg =
         [[
 
-—— 本示例来自 "Content/Script/Tutorials.12_CustomLoader.lua"
+—— 이 예제는 "Content/Script/Tutorials.12_CustomLoader.lua"에서 가져왔습니다.
 ]]
     Screen.Print(msg)
 end

@@ -1,19 +1,19 @@
---[[
-    说明：创建原生容器时通常需要指定参数类型，来确定容器内存放的数据类型
+--[[ 📦
+    설명: 네이티브 컸테이너를 생성할 때는 일반적으로 매개변수 타입을 지정하여 컸테이너에 저장될 데이터 타입을 결정해야 합니다.
     
-    例如：
+    예시:
     local array = TArray({ElementType})
     local set = TSet({ElementType})
     local map = TMap({KeyType}, {ValueType})
 
-    参数类型        示例             实际类型
+    매개변수 타입    예시             실제 타입
     boolean        true             Boolean
     number         0                Interger
     string         ""               String
     table          FVector          Vector
     userdata       FVector(1,1,1)   Vector
 
-    创建完成后，和原来的原生容器类型使用方式是相同的，更多接口可以参考源码：
+    생성 완료 후, 기존 네이티브 컸테이너 타입과 동일한 방식으로 사용할 수 있습니다. 더 많은 인터페이스는 소스 코드를 참조하세요:
     TArray      Plugins\UnLua\Source\UnLua\Private\BaseLib\LuaLib_Array.cpp
     TSet        Plugins\UnLua\Source\UnLua\Private\BaseLib\LuaLib_Set.cpp
     TMap        Plugins\UnLua\Source\UnLua\Private\BaseLib\LuaLib_Map.cpp
@@ -26,13 +26,13 @@ local M = UnLua.Class()
 local function print_intro()
     local msg =
         [[
-使用以下按键执行各个示例，并在控制台查看输出：
+다음 키를 사용하여 각 예제를 실행하고 콘솔에서 출력을 확인하세요:
 
-数字1：TArray
-数字2：TSet
-数字3：TMap
+숫자 1: TArray
+숫자 2: TSet
+숫자 3: TMap
 
-—— 本示例来自 "Content/Script/Tutorials.06_NativeContainers.lua"
+—— 이 예제는 "Content/Script/Tutorials.06_NativeContainers.lua"에서 가져왔습니다.
 ]] ..
         "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
     Screen.Print(msg)
@@ -55,7 +55,7 @@ function M:One_Pressed()
     Screen.Print("TArray")
 
     print("========== TArray ==========")
-    print("注：索引从1开始")
+    print("주의: 인덱스는 1부터 시작합니다")
 
     local array = UE.TArray(0)
     print("New:          ", dump_array(array))
