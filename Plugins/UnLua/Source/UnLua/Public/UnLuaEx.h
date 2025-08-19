@@ -104,8 +104,8 @@ namespace UnLua
      */
     struct FGlueFunction : public IExportedFunction
     {
-        FGlueFunction(const FString &InName, lua_CFunction InFunc)
-            : Name(InName), Func(InFunc)
+        FGlueFunction(const FString &InName, lua_CFunction InFunc, const FString& InClassName = TEXT(""))
+            : Name(InName), Func(InFunc), ClassName(InClassName)
         {}
 
         virtual void Register(lua_State *L) override
@@ -120,12 +120,19 @@ namespace UnLua
 
 #if WITH_EDITOR
         virtual FString GetName() const override { return Name; }
-        virtual void GenerateIntelliSense(FString &Buffer) const override {}
+        virtual void GenerateIntelliSense(FString &Buffer) const override
+        {
+            Buffer += TEXT("---BaseLib 함수 📝\r\n");
+            Buffer += TEXT("---@return any\r\n");
+            const FString ClassPrefix = ClassName.IsEmpty() ? TEXT("_G.") : ClassName + TEXT(":");       
+            Buffer += FString::Printf(TEXT("function %s%s() end\r\n\r\n"), *ClassPrefix, *Name);
+        }
 #endif
 
     private:
         FString Name;
         lua_CFunction Func;
+        FString ClassName;
     };
 
     /**

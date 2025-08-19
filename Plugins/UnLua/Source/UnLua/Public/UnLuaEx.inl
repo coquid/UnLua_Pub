@@ -870,7 +870,7 @@ namespace UnLua
         {
             while (InLib->name && InLib->func)
             {
-                GlueFunctions.Add(new FGlueFunction(UTF8_TO_TCHAR(InLib->name), InLib->func));
+                GlueFunctions.Add(new FGlueFunction(UTF8_TO_TCHAR(InLib->name), InLib->func, Name));
                 ++InLib;
             }
         }
