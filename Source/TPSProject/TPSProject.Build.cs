@@ -27,6 +27,8 @@ public class TPSProject : ModuleRules
                 "CoreUObject",
                 "Engine",
                 "InputCore",
+                "ChaosMover",
+                "Mover",
             });
 
         PrivateDependencyModuleNames.AddRange(new string[]
