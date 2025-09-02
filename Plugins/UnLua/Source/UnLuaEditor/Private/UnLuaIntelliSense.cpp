@@ -269,12 +269,160 @@ namespace UnLua
                 AccessLevel = Struct->IsNative() ? "private" : "public";
 
             FString TypeName = IntelliSense::GetTypeName(Property);
+            
+            // 🎯 MulticastDelegate 파라미터 정보를 주석으로 추가
+            FString DelegateParamInfo;
+            
+            // FMulticastDelegateProperty 처리
+            if (const FMulticastDelegateProperty* MulticastDelegateProperty = CastField<FMulticastDelegateProperty>(Property))
+            {
+                if (MulticastDelegateProperty->SignatureFunction)
+                {
+                    DelegateParamInfo = TEXT(" ***@Signature: (");
+                    
+                    bool bFirst = true;
+                    for (TFieldIterator<FProperty> It(MulticastDelegateProperty->SignatureFunction); It && (It->PropertyFlags & CPF_Parm); ++It)
+                    {
+                        const FProperty* Param = *It;
+                        
+                        // ReturnParm 제외
+                        if (Param->HasAnyPropertyFlags(CPF_ReturnParm))
+                            continue;
+                            
+                        // LatentInfo 제외
+                        if (Param->GetFName() == NAME_LatentInfo)
+                            continue;
+                        
+                        if (!bFirst)
+                            DelegateParamInfo += TEXT(", ");
+                        bFirst = false;
+                        
+                        FString ParamName = Param->GetName();
+                        FString ParamType = GetTypeName(Param);
+                        DelegateParamInfo += FString::Printf(TEXT("%s: %s"), *ParamName, *ParamType);
+                    }
+                    
+                    DelegateParamInfo += TEXT(")***");
+                }
+            }
+            
+#if ENGINE_MAJOR_VERSION > 4 || (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION > 22)
+            // FMulticastInlineDelegateProperty 처리
+            else if (const FMulticastInlineDelegateProperty* InlineDelegateProperty = CastField<FMulticastInlineDelegateProperty>(Property))
+            {
+                if (InlineDelegateProperty->SignatureFunction)
+                {
+                    DelegateParamInfo = TEXT(" ***@Signature: (");
+                    
+                    bool bFirst = true;
+                    for (TFieldIterator<FProperty> It(InlineDelegateProperty->SignatureFunction); It && (It->PropertyFlags & CPF_Parm); ++It)
+                    {
+                        const FProperty* Param = *It;
+                        
+                        if (Param->HasAnyPropertyFlags(CPF_ReturnParm))
+                            continue;
+                            
+                        if (Param->GetFName() == NAME_LatentInfo)
+                            continue;
+                        
+                        if (!bFirst)
+                            DelegateParamInfo += TEXT(", ");
+                        bFirst = false;
+                        
+                        FString ParamName = Param->GetName();
+                        FString ParamType = GetTypeName(Param);
+                        DelegateParamInfo += FString::Printf(TEXT("%s: %s"), *ParamName, *ParamType);
+                    }
+                    
+                    DelegateParamInfo += TEXT(")***");
+                }
+            }
+            // FMulticastSparseDelegateProperty 처리
+            else if (const FMulticastSparseDelegateProperty* SparseDelegateProperty = CastField<FMulticastSparseDelegateProperty>(Property))
+            {
+                if (SparseDelegateProperty->SignatureFunction)
+                {
+                    DelegateParamInfo = TEXT(" ***@Signature: (");
+                    
+                    bool bFirst = true;
+                    for (TFieldIterator<FProperty> It(SparseDelegateProperty->SignatureFunction); It && (It->PropertyFlags & CPF_Parm); ++It)
+                    {
+                        const FProperty* Param = *It;
+                        
+                        if (Param->HasAnyPropertyFlags(CPF_ReturnParm))
+                            continue;
+                            
+                        if (Param->GetFName() == NAME_LatentInfo)
+                            continue;
+                        
+                        if (!bFirst)
+                            DelegateParamInfo += TEXT(", ");
+                        bFirst = false;
+                        
+                        FString ParamName = Param->GetName();
+                        FString ParamType = GetTypeName(Param);
+                        DelegateParamInfo += FString::Printf(TEXT("%s: %s"), *ParamName, *ParamType);
+                    }
+                    
+                    DelegateParamInfo += TEXT(")***");
+                }
+            }
+#endif
+            
+            // 📝 일반 Delegate도 처리 (추가 기능)
+            else if (const FDelegateProperty* DelegateProperty = CastField<FDelegateProperty>(Property))
+            {
+                if (DelegateProperty->SignatureFunction)
+                {
+                    DelegateParamInfo = TEXT(" ***@Signature: (");
+                    
+                    bool bFirst = true;
+                    for (TFieldIterator<FProperty> It(DelegateProperty->SignatureFunction); It && (It->PropertyFlags & CPF_Parm); ++It)
+                    {
+                        const FProperty* Param = *It;
+                        
+                        if (Param->HasAnyPropertyFlags(CPF_ReturnParm))
+                            continue;
+                            
+                        if (Param->GetFName() == NAME_LatentInfo)
+                            continue;
+                        
+                        if (!bFirst)
+                            DelegateParamInfo += TEXT(", ");
+                        bFirst = false;
+                        
+                        FString ParamName = Param->GetName();
+                        FString ParamType = GetTypeName(Param);
+                        DelegateParamInfo += FString::Printf(TEXT("%s: %s"), *ParamName, *ParamType);
+                    }
+                    
+                    DelegateParamInfo += TEXT(")***");
+                }
+            }
+            
             Ret += FString::Printf(TEXT("---@field %s %s %s"), *AccessLevel, *Property->GetName(), *TypeName);
 
-            // comment
+            // comment 처리 - 기존 ToolTip과 새로운 파라미터 정보 결합
             const FString& ToolTip = Property->GetMetaData(NAME_ToolTip);
+            bool bHasComment = false;
+            
+            if (!ToolTip.IsEmpty() || !DelegateParamInfo.IsEmpty())
+            {
+                Ret += TEXT(" @");
+                bHasComment = true;
+            }
+            
             if (!ToolTip.IsEmpty())
-                Ret += " @" + EscapeComments(ToolTip, true);
+            {
+                Ret += EscapeComments(ToolTip, true);
+                if (!DelegateParamInfo.IsEmpty())
+                    Ret += TEXT(" ");
+            }
+            
+            if (!DelegateParamInfo.IsEmpty())
+            {
+                Ret += DelegateParamInfo;
+            }
 
             return Ret;
         }
